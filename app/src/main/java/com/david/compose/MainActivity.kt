@@ -80,6 +80,15 @@ fun Greeting(text: String) {
 }
 
 @Composable
+fun Greeting2(name: String) {
+    Text(
+        text = "Hello $name",
+        modifier = Modifier.padding(24.dp),
+        style = MaterialTheme.typography.h1
+    )
+}
+
+@Composable
 fun Counter(num: Int, updateNum: (Int) -> Unit) {
     Button(
         onClick = { updateNum(num+1) },
@@ -98,5 +107,13 @@ fun Counter(num: Int, updateNum: (Int) -> Unit) {
 fun MyAppPreview() {
     MyApp {
         MyScreenContent()
+    }
+}
+
+@Preview(showBackground = true, name = "Greeting2_Preview")
+@Composable
+fun TextPreview() {
+    ComposeExTheme {
+        Greeting2(name = "android")
     }
 }
