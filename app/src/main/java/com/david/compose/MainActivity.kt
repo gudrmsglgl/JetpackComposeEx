@@ -8,112 +8,70 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.david.compose.ui.theme.ComposeExTheme
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.getValue
+import androidx.compose.ui.text.font.FontWeight
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyApp {
-                MyScreenContent()
+            ComposeExTheme {
+                val isClicked = remember { mutableStateOf(false) }
+                PhotographerCard(
+                    isClick = isClicked.value,
+                    onClicked = {
+                        isClicked.value = !isClicked.value
+                    }
+                )
             }
         }
     }
 }
 
 @Composable
-fun MyApp(content: @Composable () -> Unit) {
-    ComposeExTheme {
-        Surface(color = Color.Yellow) {
-            content.invoke()
-        }
-    }
-}
-
-@Composable
-fun MyScreenContent(names: List<String> = List(1000) { "Hello Android #$it" }) {
-    val count = remember { mutableStateOf(0) }
-
-    Column(modifier = Modifier.fillMaxHeight()) {
-        NameList(names = names, modifier = Modifier.weight(1f))
-        Counter(
-            num = count.value,
-            updateNum = { newValue ->
-                count.value = newValue
-            }
-        )
-    }
-}
-
-@Composable
-fun NameList(names: List<String>, modifier: Modifier = Modifier) {
-    LazyColumn(modifier = modifier) {
-        items(items = names) { name ->
-            Greeting(text = name)
-            Divider(color = Color.Black)
-        }
-    }
-}
-
-@Composable
-fun Greeting(text: String) {
-    var isSelected by remember { mutableStateOf(false) }
-    val backgroundColor by animateColorAsState(if(isSelected) Color.Red else Color.Transparent)
-
-    Text(
-        text = text,
-        modifier = Modifier
-            .padding(24.dp)
-            .background(color = backgroundColor)
-            .clickable { isSelected = !isSelected }
-    )
-}
-
-@Composable
-fun Greeting2(name: String) {
-    Text(
-        text = "Hello $name",
-        modifier = Modifier.padding(24.dp),
-        style = MaterialTheme.typography.h1
-    )
-}
-
-@Composable
-fun Counter(num: Int, updateNum: (Int) -> Unit) {
-    Button(
-        onClick = { updateNum(num+1) },
-        colors = ButtonDefaults.buttonColors(
-            backgroundColor = if (num > 5) Color.Green else Color.White
-        )
+fun PhotographerCard(modifier: Modifier = Modifier, isClick: Boolean, onClicked: () -> Unit) {
+    Row(
+        modifier
+            .padding(8.dp)
+            .clip(RoundedCornerShape(4.dp))
+            .background(color = if (isClick) Color.Blue else Color.Transparent)
+            .clickable(onClick = onClicked)
+            .padding(16.dp)
     ) {
-       Text(text = "I'v been clicked $num times")
+       Surface(
+           modifier = Modifier.size(50.dp),
+           shape = CircleShape,
+           color = MaterialTheme.colors.onSurface.copy(alpha = 0.2f)
+       ) {
+
+       }
+       Column(
+           modifier = Modifier
+               .padding(start = 8.dp)
+               .align(Alignment.CenterVertically)
+       ) {
+           Text("Alfred Sisley", fontWeight = FontWeight.Bold)
+           CompositionLocalProvider(LocalContentAlpha provides ContentAlpha.medium) {
+               Text("3 minutes ago", style = MaterialTheme.typography.body2)
+           }
+       }
     }
 }
 
-
-
-@Preview(showBackground = true, name = "MyApp_Preview")
+@Preview(showBackground = true)
 @Composable
-fun MyAppPreview() {
-    MyApp {
-        MyScreenContent()
-    }
-}
-
-@Preview(showBackground = true, name = "Greeting2_Preview")
-@Composable
-fun TextPreview() {
-    ComposeExTheme {
-        Greeting2(name = "android")
-    }
+fun photographerCardPreview() {
+    /*ComposeExTheme {
+        PhotographerCard()
+    }*/
 }
