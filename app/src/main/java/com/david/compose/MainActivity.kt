@@ -71,7 +71,13 @@ fun PhotographerCard(modifier: Modifier = Modifier, isClick: Boolean, onClicked:
 @Preview(showBackground = true)
 @Composable
 fun photographerCardPreview() {
-    /*ComposeExTheme {
-        PhotographerCard()
-    }*/
+    ComposeExTheme {
+        val isClicked = remember { mutableStateOf(false) }
+        PhotographerCard(
+            isClick = isClicked.value,
+            onClicked = {
+                isClicked.value = !isClicked.value
+            }
+        )
+    }
 }

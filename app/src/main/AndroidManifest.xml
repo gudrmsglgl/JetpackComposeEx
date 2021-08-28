@@ -10,15 +10,22 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ComposeEx">
         <activity
-            android:name=".MainActivity"
+            android:name=".MainActivity2"
             android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.ComposeEx.NoActionBar">
+            android:label="@string/title_activity_main2"
+            android:theme="@style/Theme.ComposeEx.NoActionBar" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:theme="@style/Theme.ComposeEx.NoActionBar">
+
         </activity>
     </application>
 
