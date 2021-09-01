@@ -18,7 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.AlignmentLine
+import androidx.compose.ui.layout.FirstBaseline
+import androidx.compose.ui.layout.Placeable
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.compose.rememberImagePainter
 import com.david.compose.ui.theme.ComposeExTheme
@@ -95,7 +100,7 @@ fun ImageListItem(index: Int) {
             contentDescription = "Android Logo",
             modifier = Modifier.size(50.dp)
         )
-        Spacer(Modifier.width(10.dp))
+        Spacer(Modifier.width(15.dp))
         Text("Item #$index", style = MaterialTheme.typography.subtitle1)
     }
 }
