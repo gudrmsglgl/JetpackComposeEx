@@ -9,10 +9,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.AlignmentLine
-import androidx.compose.ui.layout.FirstBaseline
-import androidx.compose.ui.layout.Placeable
-import androidx.compose.ui.layout.layout
+import androidx.compose.ui.layout.*
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -25,7 +22,12 @@ class CustomLayoutActivity : ComponentActivity() {
             ComposeExTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
-                    Greeting("Android")
+                    MyOwnColumn(modifier = Modifier.padding(8.dp)) {
+                        Text("MyOwnColumn")
+                        Text("places items", style = MaterialTheme.typography.h1)
+                        Text("vertically.")
+                        Text("We've done it by hand!")
+                    }
                 }
             }
         }
@@ -33,8 +35,51 @@ class CustomLayoutActivity : ComponentActivity() {
 }
 
 @Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
+fun MyOwnColumn(
+    modifier: Modifier = Modifier,
+    // custom layout attributes
+    content: @Composable () -> Unit
+) {
+    Layout(
+        modifier = modifier,
+        content = content
+    ) { measurable, constraints ->
+        // measure and position children given constraints logic here
+
+        // Don't constrain child views further, measure them with given constraints
+        val placeables = measurable.map { measurable ->
+            // Measure each child
+            measurable.measure(constraints)
+        }
+
+        // Track the y co-ord we have placed children up to
+        var yPosition = 0
+
+        // Set the size of the layout as big as it can
+        layout(constraints.maxWidth, constraints.maxHeight) {
+            // Place children in the parent layout
+            placeables.forEach { placeable ->
+                // Position item on the screen
+                placeable.place(x = 0, y = yPosition)
+
+                yPosition += placeable.height
+            }
+
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MyColumnPreview() {
+    ComposeExTheme {
+        MyOwnColumn(modifier = Modifier.padding(8.dp)) {
+            Text("MyOwnColumn")
+            Text("places items", style = MaterialTheme.typography.h1)
+            Text("vertically.")
+            Text("We've done it by hand!")
+        }
+    }
 }
 
 @Preview(showBackground = true)
